@@ -17,72 +17,128 @@
             font-family: Arial, sans-serif;
         }
 
-        h1 {
+        #count {
+            font-size: 50px;
             margin-bottom: 10px;
         }
 
-        #count {
-            font-size: 45px;
-            margin: 10px;
-        }
-
         #power {
+            font-size: 18px;
             margin-bottom: 25px;
         }
 
         /* Diamond */
         #diamond {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, white, #55dfff, #168cff);
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(
+                135deg,
+                #ffffff,
+                #70e1ff,
+                #2196f3,
+                #ffffff
+            );
+
             transform: rotate(45deg);
-            border: 3px solid #b9f3ff;
-            box-shadow: 0 0 25px #00cfff;
+            border: 4px solid #b9f3ff;
+            box-shadow:
+                0 0 20px #00cfff,
+                0 0 40px #008cff;
+
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: 0.15s;
         }
 
         #diamond:hover {
-            box-shadow: 0 0 40px #00cfff;
+            transform: rotate(45deg) scale(1.08);
         }
 
         #diamond:active {
-            transform: rotate(45deg) scale(0.9);
+            transform: rotate(45deg) scale(0.92);
         }
 
-        #clickText {
+        #text {
             transform: rotate(-45deg);
+            font-size: 20px;
             font-weight: bold;
-            font-size: 18px;
+            color: white;
+            margin-top: 45px;
+            margin-left: 45px;
         }
 
         /* Shop button */
-        #shopButton {
+        #shop {
             margin-top: 45px;
-            padding: 8px 20px;
-            border: none;
-            border-radius: 7px;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
             background: #238636;
             color: white;
-            font-size: 16px;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        #shopButton:hover {
+        #shop:hover {
             background: #2ea043;
         }
 
-        /* Shop window */
-        #shop {
-            display: none;
-            position: fixed;
-            background: #161b22;
-            border: 2px solid #30363d;
-            border-radius: 12px;
-            padding: 25px;
-            width: 250px;
-            text-align: center;
-            box-shadow: 0 0 30p
+        #message {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>💎 Diamond Clicker</h1>
+
+    <div id="count">0</div>
+
+    <div id="power">Click Power: 1</div>
+
+    <div id="diamond" onclick="clickDiamond()">
+        <div id="text">CLICK</div>
+    </div>
+
+    <button id="shop" onclick="buyUpgrade()">
+        SHOP — 25 💎
+    </button>
+
+    <div id="message"></div>
+
+    <script>
+        let diamonds = 0;
+        let clickPower = 1;
+
+        function clickDiamond() {
+            diamonds += clickPower;
+            update();
+        }
+
+        function buyUpgrade() {
+            if (diamonds >= 25) {
+                diamonds -= 25;
+                clickPower += 2;
+
+                document.getElementById("message").textContent =
+                    "Upgrade purchased! +2 click power 💎";
+            } else {
+                document.getElementById("message").textContent =
+                    "You need 25 diamonds!";
+            }
+
+            update();
+        }
+
+        function update() {
+            document.getElementById("count").textContent = diamonds;
+            document.getElementById("power").textContent =
+                "Click Power: " + clickPower;
+        }
+    </script>
+
+</body>
+</html>
 ```
