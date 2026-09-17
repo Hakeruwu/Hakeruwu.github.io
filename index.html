@@ -1,13 +1,21 @@
-```html
+````html
 <!DOCTYPE html>
 <html>
 <head>
     <title>Diamond Clicker</title>
 
     <style>
+        /* Prevent selecting/underlining text */
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
         body {
             margin: 0;
             height: 100vh;
+            overflow: hidden;
             background: #0d1117;
             color: white;
             font-family: Arial, sans-serif;
@@ -27,7 +35,7 @@
             margin-bottom: 35px;
         }
 
-        /* Diamond */
+        /* Blue Diamond */
         #diamond {
             width: 110px;
             height: 110px;
@@ -56,8 +64,8 @@
             font-weight: bold;
         }
 
-        /* Arrow */
-        #arrow {
+        /* Open Shop Arrow */
+        #openArrow {
             position: fixed;
             right: 20px;
             top: 50%;
@@ -66,11 +74,11 @@
             background: #21262d;
             padding: 10px 15px;
             border-radius: 10px;
-            transition: 0.2s;
-            z-index: 2;
+            z-index: 3;
         }
 
-        #arrow:hover {
+        #openArrow:hover,
+        #closeArrow:hover {
             background: #30363d;
         }
 
@@ -80,14 +88,14 @@
             right: 0;
             top: 0;
             height: 100%;
-            width: 280px;
+            width: 300px;
             background: #161b22;
             border-left: 2px solid #30363d;
             padding: 25px;
             box-sizing: border-box;
             transform: translateX(100%);
             transition: 0.3s;
-            z-index: 1;
+            z-index: 2;
         }
 
         #shop.open {
@@ -95,7 +103,19 @@
         }
 
         #shop h2 {
-            margin-top: 40px;
+            margin-top: 35px;
+        }
+
+        /* Close Shop Arrow */
+        #closeArrow {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            background: #21262d;
+            padding: 5px 12px;
+            border-radius: 8px;
         }
 
         .upgrade {
@@ -118,6 +138,38 @@
             margin-top: 15px;
             font-size: 14px;
         }
+
+        /* Red Bonus Diamond */
+        .redDiamond {
+            position: fixed;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff7777, #ff0000, #8b0000);
+            border: 2px solid #ffaaaa;
+            transform: rotate(45deg);
+            box-shadow: 0 0 20px red;
+            cursor: pointer;
+            z-index: 10;
+            animation: moveDiamond 4s linear forwards;
+        }
+
+        .redDiamondText {
+            transform: rotate(-45deg);
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 14px;
+            color: white;
+        }
+
+        @keyframes moveDiamond {
+            from {
+                left: -70px;
+            }
+
+            to {
+                left: 110%;
+            }
+        }
     </style>
 </head>
 
@@ -129,32 +181,36 @@
 
     <div id="power">Click Power: ×1</div>
 
+    <!-- Main Diamond -->
     <div id="diamond" onclick="clickDiamond()">
         <div id="clickText">CLICK</div>
     </div>
 
-    <!-- Shop Arrow -->
-    <div id="arrow" onclick="toggleShop()">←</div>
+    <!-- Arrow to open shop -->
+    <div id="openArrow" onclick="openShop()">←</div>
 
     <!-- Shop -->
     <div id="shop">
 
+        <!-- Arrow to close shop -->
+        <div id="closeArrow" onclick="closeShop()">→</div>
+
         <h2>🛒 SHOP</h2>
 
-        <button class="upgrade" onclick="buyUpgrade(2, 100)">
-            ×2 — 100 💎
+        <button class="upgrade" onclick="buyUpgrade(2, 500)">
+            ×2 — 500 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(3, 500)">
-            ×3 — 500 💎
+        <button class="upgrade" onclick="buyUpgrade(3, 2500)">
+            ×3 — 2,500 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(4, 1000)">
-            ×4 — 1,000 💎
+        <button class="upgrade" onclick="buyUpgrade(4, 10000)">
+            ×4 — 10,000 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(5, 5000)">
-            ×5 — 5,000 💎
+        <button class="upgrade" onclick="buyUpgrade(5, 50000)">
+            ×5 — 50,000 💎
         </button>
 
         <div id="message"></div>
@@ -168,26 +224,28 @@
         function clickDiamond() {
             diamonds += clickPower;
             update();
+
+            // 20% chance to spawn a red diamond
+            if (Math.random() < 0.20) {
+                spawnRedDiamond();
+            }
         }
 
-        function toggleShop() {
-            const shop = document.getElementById("shop");
-            const arrow = document.getElementById("arrow");
+        function openShop() {
+            document.getElementById("shop").classList.add("open");
+            document.getElementById("openArrow").style.display = "none";
+        }
 
-            shop.classList.toggle("open");
-
-            if (shop.classList.contains("open")) {
-                arrow.textContent = "→";
-            } else {
-                arrow.textContent = "←";
-            }
+        function closeShop() {
+            document.getElementById("shop").classList.remove("open");
+            document.getElementById("openArrow").style.display = "block";
         }
 
         function buyUpgrade(multiplier, cost) {
 
             if (diamonds < cost) {
                 document.getElementById("message").textContent =
-                    "You need " + cost + " 💎!";
+                    "You need " + cost.toLocaleString() + " 💎!";
                 return;
             }
 
@@ -195,9 +253,42 @@
             clickPower = multiplier;
 
             document.getElementById("message").textContent =
-                "Click Power is now ×" + multiplier + "!";
+                "Upgrade bought! Click Power: ×" + multiplier;
 
             update();
+        }
+
+        function spawnRedDiamond() {
+
+            if (document.querySelector(".redDiamond")) {
+                return;
+            }
+
+            const red = document.createElement("div");
+            red.className = "redDiamond";
+
+            red.innerHTML = '<div class="redDiamondText">+100</div>';
+
+            red.style.top =
+                (Math.random() * 70 + 15) + "%";
+
+            red.onclick = function() {
+                diamonds += 100;
+
+                document.getElementById("message").textContent =
+                    "🎁 +100 FREE DIAMONDS!";
+
+                update();
+                red.remove();
+            };
+
+            document.body.appendChild(red);
+
+            setTimeout(function() {
+                if (red.parentNode) {
+                    red.remove();
+                }
+            }, 4000);
         }
 
         function update() {
