@@ -1,7 +1,7 @@
-
-<!DOCTYPE >
+```html
+<!DOCTYPE html>
 <html>
-<>
+<head>
     <title>Diamond Clicker</title>
 
     <style>
@@ -19,10 +19,15 @@
 
         #count {
             font-size: 50px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
-        /* Diamond button */
+        #power {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        /* Diamond */
         #diamond {
             width: 120px;
             height: 120px;
@@ -45,10 +50,6 @@
         }
 
         #diamond:hover {
-            box-shadow:
-                0 0 30px #00eaff,
-                0 0 60px #008cff;
-
             transform: rotate(45deg) scale(1.08);
         }
 
@@ -61,6 +62,30 @@
             font-size: 20px;
             font-weight: bold;
             color: white;
+            margin-top: 45px;
+            margin-left: 45px;
+        }
+
+        /* Shop button */
+        #shop {
+            margin-top: 45px;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #238636;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #shop:hover {
+            background: #2ea043;
+        }
+
+        #message {
+            margin-top: 12px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -71,16 +96,46 @@
 
     <div id="count">0</div>
 
+    <div id="power">Click Power: 1</div>
+
     <div id="diamond" onclick="clickDiamond()">
         <div id="text">CLICK</div>
     </div>
 
+    <button id="shop" onclick="buyUpgrade()">
+        SHOP — 25 💎
+    </button>
+
+    <div id="message"></div>
+
     <script>
         let diamonds = 0;
+        let clickPower = 1;
 
         function clickDiamond() {
-            diamonds++;
+            diamonds += clickPower;
+            update();
+        }
+
+        function buyUpgrade() {
+            if (diamonds >= 25) {
+                diamonds -= 25;
+                clickPower += 2;
+
+                document.getElementById("message").textContent =
+                    "Upgrade purchased! +2 click power 💎";
+            } else {
+                document.getElementById("message").textContent =
+                    "You need 25 diamonds!";
+            }
+
+            update();
+        }
+
+        function update() {
             document.getElementById("count").textContent = diamonds;
+            document.getElementById("power").textContent =
+                "Click Power: " + clickPower;
         }
     </script>
 
