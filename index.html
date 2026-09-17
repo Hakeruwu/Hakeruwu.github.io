@@ -1,4 +1,4 @@
-````html
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,6 +67,7 @@
             padding: 10px 15px;
             border-radius: 10px;
             transition: 0.2s;
+            z-index: 2;
         }
 
         #arrow:hover {
@@ -84,9 +85,9 @@
             border-left: 2px solid #30363d;
             padding: 25px;
             box-sizing: border-box;
-
             transform: translateX(100%);
             transition: 0.3s;
+            z-index: 1;
         }
 
         #shop.open {
@@ -113,11 +114,6 @@
             background: #2ea043;
         }
 
-        .upgrade:disabled {
-            background: #30363d;
-            cursor: not-allowed;
-        }
-
         #message {
             margin-top: 15px;
             font-size: 14px;
@@ -137,7 +133,7 @@
         <div id="clickText">CLICK</div>
     </div>
 
-    <!-- Arrow -->
+    <!-- Shop Arrow -->
     <div id="arrow" onclick="toggleShop()">←</div>
 
     <!-- Shop -->
@@ -145,20 +141,20 @@
 
         <h2>🛒 SHOP</h2>
 
-        <button class="upgrade" onclick="buyUpgrade(2, 25)">
-            ×2 — 25 💎
+        <button class="upgrade" onclick="buyUpgrade(2, 100)">
+            ×2 — 100 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(3, 75)">
-            ×3 — 75 💎
+        <button class="upgrade" onclick="buyUpgrade(3, 500)">
+            ×3 — 500 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(4, 150)">
-            ×4 — 150 💎
+        <button class="upgrade" onclick="buyUpgrade(4, 1000)">
+            ×4 — 1,000 💎
         </button>
 
-        <button class="upgrade" onclick="buyUpgrade(5, 300)">
-            ×5 — 300 💎
+        <button class="upgrade" onclick="buyUpgrade(5, 5000)">
+            ×5 — 5,000 💎
         </button>
 
         <div id="message"></div>
@@ -206,7 +202,7 @@
 
         function update() {
             document.getElementById("count").textContent =
-                diamonds + " 💎";
+                diamonds.toLocaleString() + " 💎";
 
             document.getElementById("power").textContent =
                 "Click Power: ×" + clickPower;
