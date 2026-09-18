@@ -165,6 +165,7 @@
         cursor: pointer;
         z-index: 10;
 
+        /* Slower movement */
         animation: moveDiamond 8s linear forwards;
     }
 
@@ -312,29 +313,31 @@
 
             update();
 
+            // Remove current red diamond
             red.remove();
 
-            // Start a new 40-second cooldown
-            redDiamondCooldown = true;
+            // Allow another red diamond
+            redDiamondCooldown = false;
 
+            // Spawn another red diamond after 2 seconds
             setTimeout(function() {
-                redDiamondCooldown = false;
-            }, 40000);
+                spawnRedDiamond();
+            }, 2000);
         };
 
         document.body.appendChild(red);
 
-        // Remove if it reaches the other side
+        // Remove if it crosses the screen without being clicked
         setTimeout(function() {
 
             if (red.parentNode) {
                 red.remove();
-            }
 
-            // Start the 40-second cooldown
-            setTimeout(function() {
-                redDiamondCooldown = false;
-            }, 40000);
+                // Start the 40-second cooldown
+                setTimeout(function() {
+                    redDiamondCooldown = false;
+                }, 40000);
+            }
 
         }, 8000);
     }
