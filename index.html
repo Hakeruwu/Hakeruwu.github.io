@@ -165,8 +165,8 @@
         cursor: pointer;
         z-index: 10;
 
-        /* Slower movement */
-        animation: moveDiamond 8s linear forwards;
+        /* Faster movement */
+        animation: moveDiamond 5s linear forwards;
     }
 
     .redDiamondText {
@@ -327,19 +327,19 @@
 
         document.body.appendChild(red);
 
-        // Remove if it crosses the screen without being clicked
+        // Remove if it crosses the screen
         setTimeout(function() {
 
             if (red.parentNode) {
                 red.remove();
 
-                // Start the 40-second cooldown
+                // 40-second cooldown if it wasn't clicked
                 setTimeout(function() {
                     redDiamondCooldown = false;
                 }, 40000);
             }
 
-        }, 8000);
+        }, 5000);
     }
 
     update();
