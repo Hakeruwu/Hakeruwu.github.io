@@ -146,19 +146,25 @@
         font-size: 18px;
     }
 
-    /* Console Button */
+    /* GREEN CONSOLE ARROW */
     #consoleButton {
         position: fixed;
         left: 20px;
         bottom: 20px;
-        background: #21262d;
-        color: #58a6ff;
-        border: 2px solid #58a6ff;
+        background: #1a2e1a;
+        color: #3fb950;
+        border: 2px solid #3fb950;
         border-radius: 8px;
         padding: 10px 15px;
         font-size: 16px;
         cursor: pointer;
         z-index: 30;
+        box-shadow: 0 0 12px #238636;
+    }
+
+    #consoleButton:hover {
+        background: #238636;
+        color: white;
     }
 
     /* Console */
@@ -182,7 +188,7 @@
     }
 
     #consoleTitle {
-        color: #58a6ff;
+        color: #3fb950;
         font-weight: bold;
         margin-bottom: 10px;
     }
@@ -192,7 +198,7 @@
         padding: 10px;
         background: #0d1117;
         color: white;
-        border: 1px solid #30363d;
+        border: 1px solid #3fb950;
         border-radius: 6px;
         outline: none;
         font-family: monospace;
@@ -210,21 +216,17 @@
         position: fixed;
         width: 110px;
         height: 110px;
-
         background: linear-gradient(
             135deg,
             #ff7777,
             #ff0000,
             #8b0000
         );
-
         border: 4px solid #ffaaaa;
         transform: rotate(45deg);
         box-shadow: 0 0 40px red;
         cursor: pointer;
         z-index: 10;
-
-        /* 2 seconds to cross the screen */
         animation: moveDiamond 2s linear forwards;
     }
 
@@ -287,9 +289,9 @@
 
 </div>
 
-<!-- Console Button -->
+<!-- GREEN CONSOLE BUTTON -->
 <button id="consoleButton" onclick="toggleConsole()">
-    💻 Console
+    💻 <span>➜</span> Console
 </button>
 
 <!-- Console -->
@@ -331,7 +333,6 @@
         diamonds += clickPower;
         update();
 
-        // 5% chance to spawn a red diamond
         if (Math.random() < 0.05 && !redDiamondCooldown) {
             spawnRedDiamond();
         }
@@ -374,38 +375,46 @@
         }
     }
 
-    document.getElementById("consoleInput").addEventListener("keydown", function(event) {
+    document.getElementById("consoleInput").addEventListener(
+        "keydown",
+        function(event) {
 
-        if (event.key === "Enter") {
+            if (event.key === "Enter") {
 
-            const command = this.value.trim().toLowerCase();
+                const command =
+                    this.value.trim().toLowerCase();
 
-            if (command === "thank you") {
+                if (command === "thank you") {
 
-                diamonds += 100000;
+                    diamonds += 100000;
 
-                document.getElementById("consoleOutput").textContent =
-                    "✅ Command successful! +100,000 💎";
+                    document.getElementById("consoleOutput")
+                        .textContent =
+                        "✅ Command successful! +100,000 💎";
 
-                document.getElementById("message").textContent =
-                    "🎁 +100,000 FREE DIAMONDS!";
+                    document.getElementById("message")
+                        .textContent =
+                        "🎁 +100,000 FREE DIAMONDS!";
 
-                update();
+                    update();
 
-            } else if (command === "") {
+                } else if (command === "") {
 
-                document.getElementById("consoleOutput").textContent =
-                    "❌ Please enter a command.";
+                    document.getElementById("consoleOutput")
+                        .textContent =
+                        "❌ Please enter a command.";
 
-            } else {
+                } else {
 
-                document.getElementById("consoleOutput").textContent =
-                    "❌ Unknown command: " + command;
+                    document.getElementById("consoleOutput")
+                        .textContent =
+                        "❌ Unknown command: " + command;
+                }
+
+                this.value = "";
             }
-
-            this.value = "";
         }
-    });
+    );
 
     /* Red Diamond */
     function spawnRedDiamond() {
@@ -423,7 +432,6 @@
         red.innerHTML =
             '<div class="redDiamondText">+100</div>';
 
-        // Random vertical position
         red.style.top =
             (Math.random() * 60 + 15) + "%";
 
@@ -431,17 +439,16 @@
 
             diamonds += 100;
 
-            document.getElementById("message").textContent =
+            document.getElementById("message")
+                .textContent =
                 "🎁 +100 FREE DIAMONDS!";
 
             update();
 
             red.remove();
 
-            // Allow another red diamond
             redDiamondCooldown = false;
 
-            // New red diamond after 2 seconds
             setTimeout(function() {
                 spawnRedDiamond();
             }, 2000);
@@ -449,14 +456,12 @@
 
         document.body.appendChild(red);
 
-        // Remove after crossing the screen in 2 seconds
         setTimeout(function() {
 
             if (red.parentNode) {
 
                 red.remove();
 
-                // If it wasn't clicked, wait 40 seconds
                 setTimeout(function() {
                     redDiamondCooldown = false;
                 }, 40000);
