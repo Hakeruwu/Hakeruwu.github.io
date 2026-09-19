@@ -38,7 +38,6 @@
         margin-top: 10px;
     }
 
-    /* Main Diamond */
     #diamond {
         width: 190px;
         height: 190px;
@@ -68,7 +67,6 @@
         transform: rotate(45deg) scale(0.9);
     }
 
-    /* Shop Arrow */
     #shopArrow {
         position: fixed;
         right: 0;
@@ -84,7 +82,6 @@
         z-index: 20;
     }
 
-    /* Shop */
     #shop {
         position: fixed;
         right: -330px;
@@ -268,15 +265,12 @@
 <div id="diamonds">💎 0</div>
 <div id="power">Click Power: 1</div>
 
-<!-- Main Diamond -->
 <div id="diamond" onclick="clickDiamond()">
     <div id="diamondText">CLICK</div>
 </div>
 
-<!-- Shop Arrow -->
 <div id="shopArrow" onclick="openShop()">◀</div>
 
-<!-- Shop -->
 <div id="shop">
 
     <button id="closeShop" onclick="closeShop()">▶</button>
@@ -301,7 +295,7 @@
 
 </div>
 
-<!-- Big Green Console Arrow -->
+<!-- Green Console Arrow -->
 <button id="consoleButton" onclick="toggleConsole()">
     <span id="greenArrow">➜</span>
 </button>
@@ -316,13 +310,11 @@
     <input
         id="consoleInput"
         type="text"
-        placeholder="Type a command..."
+        placeholder="Enter command..."
         autocomplete="off"
     >
 
-    <div id="consoleOutput">
-        Type "thank you" and press Enter
-    </div>
+    <div id="consoleOutput"></div>
 
 </div>
 
@@ -345,7 +337,6 @@
         diamonds += clickPower;
         update();
 
-        // 5% chance to spawn a red diamond
         if (Math.random() < 0.05 && !redDiamondCooldown) {
             spawnRedDiamond();
         }
@@ -366,7 +357,6 @@
         }
     }
 
-    /* Shop */
     function openShop() {
         document.getElementById("shop").classList.add("open");
         document.getElementById("shopArrow").style.display = "none";
@@ -377,7 +367,6 @@
         document.getElementById("shopArrow").style.display = "block";
     }
 
-    /* Console */
     function toggleConsole() {
         const consoleBox =
             document.getElementById("console");
@@ -417,8 +406,7 @@
             } else if (command === "") {
 
                 document.getElementById("consoleOutput")
-                    .textContent =
-                    "❌ Please enter a command.";
+                    .textContent = "";
 
             } else {
 
@@ -431,7 +419,6 @@
         }
     });
 
-    /* Red Bonus Diamond */
     function spawnRedDiamond() {
 
         if (redDiamondCooldown) {
@@ -448,7 +435,6 @@
         red.innerHTML =
             '<div class="redDiamondText">+100</div>';
 
-        // Random vertical position
         red.style.top =
             (Math.random() * 60 + 15) + "%";
 
@@ -466,7 +452,6 @@
 
             redDiamondCooldown = false;
 
-            // New red diamond after 2 seconds
             setTimeout(function() {
                 spawnRedDiamond();
             }, 2000);
@@ -474,14 +459,12 @@
 
         document.body.appendChild(red);
 
-        // Red diamond crosses screen in 2 seconds
         setTimeout(function() {
 
             if (red.parentNode) {
 
                 red.remove();
 
-                // If missed, wait 40 seconds
                 setTimeout(function() {
                     redDiamondCooldown = false;
                 }, 40000);
