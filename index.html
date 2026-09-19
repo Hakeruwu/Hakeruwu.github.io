@@ -146,32 +146,43 @@
         font-size: 18px;
     }
 
-    /* GREEN CONSOLE ARROW */
+    /* BIG GREEN CONSOLE ARROW */
     #consoleButton {
         position: fixed;
         left: 20px;
         bottom: 20px;
+        width: 65px;
+        height: 55px;
         background: #1a2e1a;
         color: #3fb950;
-        border: 2px solid #3fb950;
-        border-radius: 8px;
-        padding: 10px 15px;
-        font-size: 16px;
+        border: 3px solid #3fb950;
+        border-radius: 10px;
+        font-size: 38px;
         cursor: pointer;
         z-index: 30;
-        box-shadow: 0 0 12px #238636;
+        box-shadow: 0 0 20px #238636;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
     }
 
     #consoleButton:hover {
         background: #238636;
         color: white;
+        transform: scale(1.08);
+    }
+
+    #greenArrow {
+        display: block;
+        line-height: 1;
     }
 
     /* Console */
     #console {
         position: fixed;
         left: 20px;
-        bottom: 65px;
+        bottom: 85px;
         width: 350px;
         background: #010409;
         border: 2px solid #30363d;
@@ -257,6 +268,7 @@
 <div id="diamonds">💎 0</div>
 <div id="power">Click Power: 1</div>
 
+<!-- Main Diamond -->
 <div id="diamond" onclick="clickDiamond()">
     <div id="diamondText">CLICK</div>
 </div>
@@ -289,9 +301,9 @@
 
 </div>
 
-<!-- GREEN CONSOLE BUTTON -->
+<!-- Big Green Console Arrow -->
 <button id="consoleButton" onclick="toggleConsole()">
-    💻 <span>➜</span> Console
+    <span id="greenArrow">➜</span>
 </button>
 
 <!-- Console -->
@@ -333,6 +345,7 @@
         diamonds += clickPower;
         update();
 
+        // 5% chance to spawn a red diamond
         if (Math.random() < 0.05 && !redDiamondCooldown) {
             spawnRedDiamond();
         }
@@ -353,6 +366,7 @@
         }
     }
 
+    /* Shop */
     function openShop() {
         document.getElementById("shop").classList.add("open");
         document.getElementById("shopArrow").style.display = "none";
@@ -365,8 +379,11 @@
 
     /* Console */
     function toggleConsole() {
-        const consoleBox = document.getElementById("console");
-        const input = document.getElementById("consoleInput");
+        const consoleBox =
+            document.getElementById("console");
+
+        const input =
+            document.getElementById("consoleInput");
 
         consoleBox.classList.toggle("open");
 
@@ -375,48 +392,46 @@
         }
     }
 
-    document.getElementById("consoleInput").addEventListener(
-        "keydown",
-        function(event) {
+    document.getElementById("consoleInput")
+        .addEventListener("keydown", function(event) {
 
-            if (event.key === "Enter") {
+        if (event.key === "Enter") {
 
-                const command =
-                    this.value.trim().toLowerCase();
+            const command =
+                this.value.trim().toLowerCase();
 
-                if (command === "thank you") {
+            if (command === "thank you") {
 
-                    diamonds += 100000;
+                diamonds += 100000;
 
-                    document.getElementById("consoleOutput")
-                        .textContent =
-                        "✅ Command successful! +100,000 💎";
+                document.getElementById("consoleOutput")
+                    .textContent =
+                    "✅ Command successful! +100,000 💎";
 
-                    document.getElementById("message")
-                        .textContent =
-                        "🎁 +100,000 FREE DIAMONDS!";
+                document.getElementById("message")
+                    .textContent =
+                    "🎁 +100,000 FREE DIAMONDS!";
 
-                    update();
+                update();
 
-                } else if (command === "") {
+            } else if (command === "") {
 
-                    document.getElementById("consoleOutput")
-                        .textContent =
-                        "❌ Please enter a command.";
+                document.getElementById("consoleOutput")
+                    .textContent =
+                    "❌ Please enter a command.";
 
-                } else {
+            } else {
 
-                    document.getElementById("consoleOutput")
-                        .textContent =
-                        "❌ Unknown command: " + command;
-                }
-
-                this.value = "";
+                document.getElementById("consoleOutput")
+                    .textContent =
+                    "❌ Unknown command: " + command;
             }
-        }
-    );
 
-    /* Red Diamond */
+            this.value = "";
+        }
+    });
+
+    /* Red Bonus Diamond */
     function spawnRedDiamond() {
 
         if (redDiamondCooldown) {
@@ -425,13 +440,15 @@
 
         redDiamondCooldown = true;
 
-        const red = document.createElement("div");
+        const red =
+            document.createElement("div");
 
         red.className = "redDiamond";
 
         red.innerHTML =
             '<div class="redDiamondText">+100</div>';
 
+        // Random vertical position
         red.style.top =
             (Math.random() * 60 + 15) + "%";
 
@@ -449,6 +466,7 @@
 
             redDiamondCooldown = false;
 
+            // New red diamond after 2 seconds
             setTimeout(function() {
                 spawnRedDiamond();
             }, 2000);
@@ -456,12 +474,14 @@
 
         document.body.appendChild(red);
 
+        // Red diamond crosses screen in 2 seconds
         setTimeout(function() {
 
             if (red.parentNode) {
 
                 red.remove();
 
+                // If missed, wait 40 seconds
                 setTimeout(function() {
                     redDiamondCooldown = false;
                 }, 40000);
