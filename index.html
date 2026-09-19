@@ -146,6 +146,65 @@
         font-size: 18px;
     }
 
+    /* Console Button */
+    #consoleButton {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        background: #21262d;
+        color: #58a6ff;
+        border: 2px solid #58a6ff;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 30;
+    }
+
+    /* Console */
+    #console {
+        position: fixed;
+        left: 20px;
+        bottom: 65px;
+        width: 350px;
+        background: #010409;
+        border: 2px solid #30363d;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: left;
+        display: none;
+        z-index: 30;
+        box-shadow: 0 0 20px black;
+    }
+
+    #console.open {
+        display: block;
+    }
+
+    #consoleTitle {
+        color: #58a6ff;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    #consoleInput {
+        width: 100%;
+        padding: 10px;
+        background: #0d1117;
+        color: white;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        outline: none;
+        font-family: monospace;
+    }
+
+    #consoleOutput {
+        margin-top: 10px;
+        color: #8b949e;
+        font-family: monospace;
+        font-size: 14px;
+    }
+
     /* Red Bonus Diamond */
     .redDiamond {
         position: fixed;
@@ -200,8 +259,10 @@
     <div id="diamondText">CLICK</div>
 </div>
 
+<!-- Shop Arrow -->
 <div id="shopArrow" onclick="openShop()">◀</div>
 
+<!-- Shop -->
 <div id="shop">
 
     <button id="closeShop" onclick="closeShop()">▶</button>
@@ -223,6 +284,31 @@
     <button class="upgrade" onclick="buyUpgrade(5, 50000)">
         👑 ×5 — 50,000 💎
     </button>
+
+</div>
+
+<!-- Console Button -->
+<button id="consoleButton" onclick="toggleConsole()">
+    💻 Console
+</button>
+
+<!-- Console -->
+<div id="console">
+
+    <div id="consoleTitle">
+        💻 Diamond Console
+    </div>
+
+    <input
+        id="consoleInput"
+        type="text"
+        placeholder="Type a command..."
+        autocomplete="off"
+    >
+
+    <div id="consoleOutput">
+        Type "thank you" and press Enter
+    </div>
 
 </div>
 
@@ -276,7 +362,54 @@
         document.getElementById("shopArrow").style.display = "block";
     }
 
+    /* Console */
+    function toggleConsole() {
+        const consoleBox = document.getElementById("console");
+        const input = document.getElementById("consoleInput");
+
+        consoleBox.classList.toggle("open");
+
+        if (consoleBox.classList.contains("open")) {
+            input.focus();
+        }
+    }
+
+    document.getElementById("consoleInput").addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            const command = this.value.trim().toLowerCase();
+
+            if (command === "thank you") {
+
+                diamonds += 100000;
+
+                document.getElementById("consoleOutput").textContent =
+                    "✅ Command successful! +100,000 💎";
+
+                document.getElementById("message").textContent =
+                    "🎁 +100,000 FREE DIAMONDS!";
+
+                update();
+
+            } else if (command === "") {
+
+                document.getElementById("consoleOutput").textContent =
+                    "❌ Please enter a command.";
+
+            } else {
+
+                document.getElementById("consoleOutput").textContent =
+                    "❌ Unknown command: " + command;
+            }
+
+            this.value = "";
+        }
+    });
+
+    /* Red Diamond */
     function spawnRedDiamond() {
+
         if (redDiamondCooldown) {
             return;
         }
@@ -284,14 +417,18 @@
         redDiamondCooldown = true;
 
         const red = document.createElement("div");
+
         red.className = "redDiamond";
-        red.innerHTML = '<div class="redDiamondText">+100</div>';
+
+        red.innerHTML =
+            '<div class="redDiamondText">+100</div>';
 
         // Random vertical position
         red.style.top =
             (Math.random() * 60 + 15) + "%";
 
         red.onclick = function() {
+
             diamonds += 100;
 
             document.getElementById("message").textContent =
@@ -314,7 +451,9 @@
 
         // Remove after crossing the screen in 2 seconds
         setTimeout(function() {
+
             if (red.parentNode) {
+
                 red.remove();
 
                 // If it wasn't clicked, wait 40 seconds
@@ -322,6 +461,7 @@
                     redDiamondCooldown = false;
                 }, 40000);
             }
+
         }, 2000);
     }
 
