@@ -6,474 +6,1273 @@
 <title>💎 Diamond Clicker</title>
 
 <style>
-    * {
-        user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        box-sizing: border-box;
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #0d1117;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* =========================
+   TITLE / COUNTER
+========================= */
+
+h1 {
+    margin-top: 35px;
+    font-size: 42px;
+}
+
+#diamonds {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#power {
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+/* =========================
+   MAIN DIAMOND
+========================= */
+
+#diamond {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 180px;
+    height: 180px;
+    border: 5px solid #7ec8ff;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        #66c7ff,
+        #168cff,
+        #0055aa
+    );
+    box-shadow:
+        0 0 30px #168cff,
+        0 0 70px #0066ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+#diamondText {
+    transform: rotate(-45deg);
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#diamond.clicked {
+    animation: diamondClick 0.3s ease;
+}
+
+@keyframes diamondClick {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            rotate(45deg)
+            scale(1);
+        box-shadow:
+            0 0 30px #168cff,
+            0 0 70px #0066ff;
     }
 
-    body {
-        margin: 0;
-        background: #0d1117;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        overflow: hidden;
+    35% {
+        transform:
+            translate(-50%, -50%)
+            rotate(45deg)
+            scale(0.88);
+        box-shadow:
+            0 0 55px #58c7ff,
+            0 0 120px #168cff;
     }
 
-    h1 {
-        margin-top: 40px;
-        font-size: 42px;
+    70% {
+        transform:
+            translate(-50%, -50%)
+            rotate(45deg)
+            scale(1.08);
+        box-shadow:
+            0 0 70px #58c7ff,
+            0 0 140px #0066ff;
     }
 
-    #diamonds {
-        font-size: 30px;
-        margin-top: 20px;
+    100% {
+        transform:
+            translate(-50%, -50%)
+            rotate(45deg)
+            scale(1);
+        box-shadow:
+            0 0 30px #168cff,
+            0 0 70px #0066ff;
+    }
+}
+
+/* =========================
+   DIAMOND PARTICLES
+========================= */
+
+.diamondParticle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #58c7ff;
+    transform: rotate(45deg);
+    pointer-events: none;
+    z-index: 100;
+    animation: particleFly 0.7s ease-out forwards;
+    box-shadow: 0 0 10px #168cff;
+}
+
+@keyframes particleFly {
+    0% {
+        opacity: 1;
+        transform:
+            translate(0, 0)
+            rotate(45deg)
+            scale(1);
     }
 
-    #power {
-        font-size: 18px;
-        color: #58a6ff;
-        margin-top: 10px;
+    100% {
+        opacity: 0;
+        transform:
+            translate(
+                var(--particle-x),
+                var(--particle-y)
+            )
+            rotate(180deg)
+            scale(0);
+    }
+}
+
+/* =========================
+   SHOP ARROW
+========================= */
+
+#shopArrow {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 70px;
+    background: #161b22;
+    border: 3px solid #58a6ff;
+    border-right: none;
+    border-radius: 15px 0 0 15px;
+    color: #58a6ff;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+}
+
+/* =========================
+   SHOP
+========================= */
+
+#shop {
+    position: fixed;
+    right: -350px;
+    top: 0;
+    width: 350px;
+    height: 100vh;
+    background: #161b22;
+    border-left: 3px solid #58a6ff;
+    padding: 25px;
+    transition: right 0.3s ease;
+    z-index: 19;
+}
+
+#shop.open {
+    right: 0;
+}
+
+.shopTitle {
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.shopItem {
+    background: #0d1117;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 12px 0;
+}
+
+.shopItem button {
+    width: 100%;
+    padding: 12px;
+    background: #238636;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.shopItem button:hover {
+    background: #2ea043;
+}
+
+#closeShop {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #8b0000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* =========================
+   CONSOLE
+========================= */
+
+#consoleButton {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 65px;
+    height: 55px;
+    background: #0b2e16;
+    color: #39ff14;
+    border: 3px solid #39ff14;
+    border-radius: 10px;
+    font-size: 34px;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: 0 0 20px #00ff00;
+}
+
+#console {
+    position: fixed;
+    left: -400px;
+    bottom: 0;
+    width: 400px;
+    height: 230px;
+    background: #050805;
+    border: 3px solid #39ff14;
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 29;
+    text-align: left;
+}
+
+#console.open {
+    left: 0;
+}
+
+#consoleTitle {
+    color: #39ff14;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+#consoleInput {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: #39ff14;
+    border: 2px solid #39ff14;
+    outline: none;
+    font-family: monospace;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+#consoleOutput {
+    margin-top: 15px;
+    color: #39ff14;
+    font-family: monospace;
+}
+
+/* =========================
+   CRYPTO BUTTON
+========================= */
+
+#cryptoButton {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    width: 65px;
+    height: 55px;
+    background: #2e1515;
+    color: #ff3333;
+    border: 3px solid #ff3333;
+    border-radius: 10px;
+    font-size: 34px;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: 0 0 20px #ff0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   CRYPTO PANEL
+========================= */
+
+#cryptoPanel {
+    position: fixed;
+    left: -360px;
+    top: 0;
+    width: 360px;
+    height: 100vh;
+    background: #120808;
+    border-right: 3px solid #ff3333;
+    padding: 25px;
+    transition: left 0.3s ease;
+    z-index: 25;
+}
+
+#cryptoPanel.open {
+    left: 0;
+}
+
+#cryptoTitle {
+    color: #ff3333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#cryptoDiamonds {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#cryptoAmountInput {
+    width: 100%;
+    padding: 13px;
+    background: #050000;
+    color: white;
+    border: 2px solid #ff3333;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.cryptoButton {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    background: #8b0000;
+    color: white;
+    border: 2px solid #ff3333;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.cryptoButton:hover {
+    background: #cc0000;
+}
+
+#sellCrypto {
+    display: none;
+}
+
+#cryptoStatus {
+    margin-top: 20px;
+    min-height: 50px;
+    color: #ffaaaa;
+}
+
+/* =========================
+   BONUS DIAMOND
+========================= */
+
+#bonusDiamond {
+    position: fixed;
+    left: -130px;
+    width: 110px;
+    height: 110px;
+    border: 4px solid #ffaaaa;
+    background: linear-gradient(
+        135deg,
+        #ff7777,
+        #ff0000,
+        #8b0000
+    );
+    box-shadow: 0 0 40px red;
+    transform: rotate(45deg);
+    z-index: 10;
+    cursor: pointer;
+    animation: moveDiamond 2s linear forwards;
+}
+
+#bonusDiamondText {
+    transform: rotate(-45deg);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes moveDiamond {
+    from {
+        left: -130px;
     }
 
-    #diamond {
-        width: 190px;
-        height: 190px;
-        background: linear-gradient(
-            135deg,
-            #79c0ff,
-            #2188ff,
-            #005cc5
-        );
-        transform: rotate(45deg);
-        margin: 90px auto;
-        cursor: pointer;
-        border: 4px solid #a5d8ff;
-        box-shadow: 0 0 40px #2188ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    to {
+        left: 110%;
+    }
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+#message {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* =========================
+   BOOT SCREEN
+========================= */
+
+#bootScreen {
+    position: fixed;
+    inset: 0;
+    background: #020403;
+    color: #39ff14;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    animation: bootFade 4.5s forwards;
+}
+
+#bootText {
+    width: 80%;
+    max-width: 650px;
+    text-align: left;
+    font-size: 20px;
+    line-height: 1.7;
+    text-shadow: 0 0 8px #39ff14;
+    animation: bootGlitch 0.15s infinite;
+}
+
+.bootLine {
+    opacity: 0;
+    display: block;
+    animation: bootLine 0.5s forwards;
+}
+
+.line1 { animation-delay: 0.5s; }
+.line2 { animation-delay: 1.1s; }
+.line3 { animation-delay: 1.7s; }
+.line4 { animation-delay: 2.3s; }
+
+.bootReady {
+    opacity: 0;
+    display: block;
+    animation: ready 0.5s 3s forwards;
+}
+
+#bootScreen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+}
+
+@keyframes bootLine {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
     }
 
-    #diamondText {
-        transform: rotate(-45deg);
-        font-size: 25px;
-        font-weight: bold;
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes ready {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bootGlitch {
+    0% { transform: translate(0); }
+    25% { transform: translate(1px, -1px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(1px, 1px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes bootFade {
+    0%, 82% {
+        opacity: 1;
     }
 
-    #diamond:active {
-        transform: rotate(45deg) scale(0.9);
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
-
-    #shopArrow {
-        position: fixed;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        background: #21262d;
-        border: 2px solid #58a6ff;
-        border-right: none;
-        padding: 18px 12px;
-        font-size: 25px;
-        cursor: pointer;
-        border-radius: 12px 0 0 12px;
-        z-index: 20;
-    }
-
-    #shop {
-        position: fixed;
-        right: -330px;
-        top: 0;
-        width: 330px;
-        height: 100%;
-        background: #161b22;
-        border-left: 2px solid #30363d;
-        padding: 30px;
-        transition: right 0.3s ease;
-        z-index: 15;
-    }
-
-    #shop.open {
-        right: 0;
-    }
-
-    #closeShop {
-        position: absolute;
-        left: 15px;
-        top: 20px;
-        background: #21262d;
-        color: white;
-        border: 2px solid #58a6ff;
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    #shop h2 {
-        margin-top: 60px;
-        font-size: 30px;
-    }
-
-    .upgrade {
-        width: 100%;
-        padding: 16px;
-        margin: 12px 0;
-        background: #21262d;
-        color: white;
-        border: 2px solid #30363d;
-        border-radius: 10px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    .upgrade:hover {
-        background: #30363d;
-        border-color: #58a6ff;
-        transform: scale(1.03);
-    }
-
-    #message {
-        position: fixed;
-        bottom: 30px;
-        width: 100%;
-        font-size: 18px;
-    }
-
-    /* BIG GREEN CONSOLE ARROW */
-    #consoleButton {
-        position: fixed;
-        left: 20px;
-        bottom: 20px;
-        width: 65px;
-        height: 55px;
-        background: #1a2e1a;
-        color: #3fb950;
-        border: 3px solid #3fb950;
-        border-radius: 10px;
-        font-size: 38px;
-        cursor: pointer;
-        z-index: 30;
-        box-shadow: 0 0 20px #238636;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.2s;
-    }
-
-    #consoleButton:hover {
-        background: #238636;
-        color: white;
-        transform: scale(1.08);
-    }
-
-    #greenArrow {
-        display: block;
-        line-height: 1;
-    }
-
-    /* Console */
-    #console {
-        position: fixed;
-        left: 20px;
-        bottom: 85px;
-        width: 350px;
-        background: #010409;
-        border: 2px solid #30363d;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: left;
-        display: none;
-        z-index: 30;
-        box-shadow: 0 0 20px black;
-    }
-
-    #console.open {
-        display: block;
-    }
-
-    #consoleTitle {
-        color: #3fb950;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    #consoleInput {
-        width: 100%;
-        padding: 10px;
-        background: #0d1117;
-        color: white;
-        border: 1px solid #3fb950;
-        border-radius: 6px;
-        outline: none;
-        font-family: monospace;
-    }
-
-    #consoleOutput {
-        margin-top: 10px;
-        color: #8b949e;
-        font-family: monospace;
-        font-size: 14px;
-    }
-
-    /* Red Bonus Diamond */
-    .redDiamond {
-        position: fixed;
-        width: 110px;
-        height: 110px;
-        background: linear-gradient(
-            135deg,
-            #ff7777,
-            #ff0000,
-            #8b0000
-        );
-        border: 4px solid #ffaaaa;
-        transform: rotate(45deg);
-        box-shadow: 0 0 40px red;
-        cursor: pointer;
-        z-index: 10;
-        animation: moveDiamond 2s linear forwards;
-    }
-
-    .redDiamondText {
-        transform: rotate(-45deg);
-        font-size: 21px;
-        font-weight: bold;
-        margin-top: 40px;
-        color: white;
-    }
-
-    @keyframes moveDiamond {
-        from {
-            left: -140px;
-        }
-
-        to {
-            left: 110%;
-        }
-    }
+}
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     BOOT
+========================= -->
+
+<div id="bootScreen">
+    <div id="bootText">
+        DIAMOND SYSTEM
+
+        <span class="bootLine line1">INITIALIZING...</span>
+        <span class="bootLine line2">LOADING GAME DATA...</span>
+        <span class="bootLine line3">CHECKING SYSTEM...</span>
+        <span class="bootLine line4">CONNECTION ESTABLISHED...</span>
+
+        <br>
+
+        <span class="bootReady">SYSTEM READY</span>
+    </div>
+</div>
+
+
+<!-- =========================
+     GAME
+========================= -->
+
 <h1>💎 Diamond Clicker</h1>
 
 <div id="diamonds">💎 0</div>
-<div id="power">Click Power: 1</div>
+
+<div id="power">
+    Click Power: 1
+</div>
 
 <div id="diamond" onclick="clickDiamond()">
     <div id="diamondText">CLICK</div>
 </div>
 
-<div id="shopArrow" onclick="openShop()">◀</div>
+
+<!-- =========================
+     SHOP
+========================= -->
+
+<div id="shopArrow" onclick="openShop()">
+    ◀
+</div>
 
 <div id="shop">
 
-    <button id="closeShop" onclick="closeShop()">▶</button>
-
-    <h2>🛒 Shop</h2>
-
-    <button class="upgrade" onclick="buyUpgrade(2, 500)">
-        ⚡ ×2 — 500 💎
+    <button id="closeShop" onclick="closeShop()">
+        ✕
     </button>
 
-    <button class="upgrade" onclick="buyUpgrade(3, 2500)">
-        🔥 ×3 — 2,500 💎
-    </button>
+    <div class="shopTitle">
+        🛒 SHOP
+    </div>
 
-    <button class="upgrade" onclick="buyUpgrade(4, 10000)">
-        💎 ×4 — 10,000 💎
-    </button>
+    <div class="shopItem">
+        <h3>⚡ ×2 Power</h3>
+        <p>500 💎</p>
+        <button onclick="buyUpgrade(2, 500)">
+            BUY
+        </button>
+    </div>
 
-    <button class="upgrade" onclick="buyUpgrade(5, 50000)">
-        👑 ×5 — 50,000 💎
-    </button>
+    <div class="shopItem">
+        <h3>🔥 ×3 Power</h3>
+        <p>2,500 💎</p>
+        <button onclick="buyUpgrade(3, 2500)">
+            BUY
+        </button>
+    </div>
+
+    <div class="shopItem">
+        <h3>💎 ×4 Power</h3>
+        <p>10,000 💎</p>
+        <button onclick="buyUpgrade(4, 10000)">
+            BUY
+        </button>
+    </div>
+
+    <div class="shopItem">
+        <h3>👑 ×5 Power</h3>
+        <p>50,000 💎</p>
+        <button onclick="buyUpgrade(5, 50000)">
+            BUY
+        </button>
+    </div>
 
 </div>
 
-<!-- Green Console Arrow -->
+
+<!-- =========================
+     CONSOLE
+========================= -->
+
 <button id="consoleButton" onclick="toggleConsole()">
-    <span id="greenArrow">➜</span>
+    ➜
 </button>
 
-<!-- Console -->
 <div id="console">
 
     <div id="consoleTitle">
-        💻 Diamond Console
+        💻 SYSTEM CONSOLE
     </div>
 
     <input
         id="consoleInput"
         type="text"
         placeholder="Enter command..."
-        autocomplete="off"
+        onkeydown="consoleCommand(event)"
     >
 
     <div id="consoleOutput"></div>
 
 </div>
 
+
+<!-- =========================
+     CRYPTO
+========================= -->
+
+<button id="cryptoButton" onclick="toggleCrypto()">
+    ▼
+</button>
+
+<div id="cryptoPanel">
+
+    <div id="cryptoTitle">
+        🔴 Crypto Market
+    </div>
+
+    <div id="cryptoDiamonds">
+        Available: 💎 0
+    </div>
+
+    <input
+        id="cryptoAmountInput"
+        type="number"
+        min="1"
+        step="1"
+        placeholder="Amount of 💎 to invest"
+    >
+
+    <button
+        id="buyCrypto"
+        class="cryptoButton"
+        onclick="buyCrypto()"
+    >
+        🪙 Start Trade
+    </button>
+
+    <button
+        id="sellCrypto"
+        class="cryptoButton"
+        onclick="sellCrypto()"
+    >
+        🎲 Resolve 50/50 Trade
+    </button>
+
+    <div id="cryptoStatus">
+        Enter an amount to start a trade.
+    </div>
+
+</div>
+
 <div id="message"></div>
 
+
 <script>
-    let diamonds = 0;
-    let clickPower = 1;
-    let redDiamondCooldown = false;
 
-    function update() {
-        document.getElementById("diamonds").textContent =
-            "💎 " + diamonds;
+/* =========================
+   VARIABLES
+========================= */
 
-        document.getElementById("power").textContent =
-            "Click Power: " + clickPower;
+let diamonds = 0;
+let clickPower = 1;
+
+let bonusCooldown = false;
+
+let cryptoAmount = 0;
+let cryptoBuyPrice = 0;
+let cryptoReady = false;
+let cryptoTimer = null;
+
+
+/* =========================
+   UPDATE
+========================= */
+
+function update() {
+
+    document.getElementById("diamonds").textContent =
+        "💎 " + diamonds.toLocaleString();
+
+    document.getElementById("power").textContent =
+        "Click Power: " + clickPower;
+
+    document.getElementById("cryptoDiamonds").textContent =
+        "Available: 💎 " + diamonds.toLocaleString();
+}
+
+
+/* =========================
+   MENU BUTTON CONTROL
+========================= */
+
+function setMenuButtons() {
+
+    const shopOpen =
+        document.getElementById("shop")
+            .classList.contains("open");
+
+    const consoleOpen =
+        document.getElementById("console")
+            .classList.contains("open");
+
+    const cryptoOpen =
+        document.getElementById("cryptoPanel")
+            .classList.contains("open");
+
+
+    /* SHOP ARROW */
+
+    document.getElementById("shopArrow")
+        .style.pointerEvents =
+        consoleOpen || cryptoOpen
+            ? "none"
+            : "auto";
+
+
+    /* CONSOLE BUTTON */
+
+    document.getElementById("consoleButton")
+        .style.pointerEvents =
+        shopOpen || cryptoOpen
+            ? "none"
+            : "auto";
+
+
+    /* CRYPTO BUTTON */
+
+    document.getElementById("cryptoButton")
+        .style.pointerEvents =
+        shopOpen || consoleOpen
+            ? "none"
+            : "auto";
+}
+
+
+/* =========================
+   SHOP
+========================= */
+
+function openShop() {
+
+    document.getElementById("console")
+        .classList.remove("open");
+
+    document.getElementById("cryptoPanel")
+        .classList.remove("open");
+
+    document.getElementById("shop")
+        .classList.add("open");
+
+    document.getElementById("shopArrow")
+        .style.display = "none";
+
+    setMenuButtons();
+}
+
+
+function closeShop() {
+
+    document.getElementById("shop")
+        .classList.remove("open");
+
+    document.getElementById("shopArrow")
+        .style.display = "flex";
+
+    setMenuButtons();
+}
+
+
+function buyUpgrade(multiplier, cost) {
+
+    if (diamonds < cost) {
+
+        document.getElementById("message")
+            .textContent =
+            "❌ Not enough diamonds!";
+
+        return;
     }
 
-    function clickDiamond() {
-        diamonds += clickPower;
+    diamonds -= cost;
+
+    clickPower = multiplier;
+
+    update();
+
+    document.getElementById("message")
+        .textContent =
+        "✅ Click Power ×" + multiplier;
+
+    setTimeout(function() {
+        document.getElementById("message")
+            .textContent = "";
+    }, 1500);
+}
+
+
+/* =========================
+   CONSOLE
+========================= */
+
+function toggleConsole() {
+
+    const consolePanel =
+        document.getElementById("console");
+
+    if (consolePanel.classList.contains("open")) {
+
+        consolePanel.classList.remove("open");
+
+    } else {
+
+        document.getElementById("shop")
+            .classList.remove("open");
+
+        document.getElementById("cryptoPanel")
+            .classList.remove("open");
+
+        consolePanel.classList.add("open");
+    }
+
+    setMenuButtons();
+}
+
+
+function consoleCommand(event) {
+
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const input =
+        document.getElementById("consoleInput");
+
+    const command =
+        input.value.trim().toLowerCase();
+
+    const output =
+        document.getElementById("consoleOutput");
+
+    if (command === "thank you") {
+
+        diamonds += 100000;
+
+        output.textContent =
+            "✅ 100,000 diamonds added.";
+
         update();
 
-        if (Math.random() < 0.05 && !redDiamondCooldown) {
-            spawnRedDiamond();
-        }
+    } else if (command === "") {
+
+        output.textContent = "";
+
+    } else {
+
+        output.textContent =
+            "❌ Unknown command: " + command;
     }
 
-    function buyUpgrade(multiplier, cost) {
-        if (diamonds >= cost) {
-            diamonds -= cost;
-            clickPower = multiplier;
+    input.value = "";
+}
 
-            document.getElementById("message").textContent =
-                "✅ Click Power is now ×" + multiplier + "!";
 
-            update();
-        } else {
-            document.getElementById("message").textContent =
-                "❌ You need " + cost + " 💎!";
-        }
+/* =========================
+   CRYPTO
+========================= */
+
+function toggleCrypto() {
+
+    const cryptoPanel =
+        document.getElementById("cryptoPanel");
+
+    if (cryptoPanel.classList.contains("open")) {
+
+        cryptoPanel.classList.remove("open");
+
+    } else {
+
+        document.getElementById("shop")
+            .classList.remove("open");
+
+        document.getElementById("console")
+            .classList.remove("open");
+
+        cryptoPanel.classList.add("open");
     }
 
-    function openShop() {
-        document.getElementById("shop").classList.add("open");
-        document.getElementById("shopArrow").style.display = "none";
+    setMenuButtons();
+}
+
+
+function buyCrypto() {
+
+    if (cryptoAmount > 0) {
+
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "⚠️ You already have a trade running.";
+
+        return;
     }
 
-    function closeShop() {
-        document.getElementById("shop").classList.remove("open");
-        document.getElementById("shopArrow").style.display = "block";
+    const input =
+        document.getElementById("cryptoAmountInput");
+
+    const amount =
+        Math.floor(Number(input.value));
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "❌ Enter a valid amount.";
+
+        return;
     }
 
-    function toggleConsole() {
-        const consoleBox =
-            document.getElementById("console");
+    if (amount > diamonds) {
 
-        const input =
-            document.getElementById("consoleInput");
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "❌ You don't have enough diamonds.";
 
-        consoleBox.classList.toggle("open");
-
-        if (consoleBox.classList.contains("open")) {
-            input.focus();
-        }
+        return;
     }
 
-    document.getElementById("consoleInput")
-        .addEventListener("keydown", function(event) {
+    cryptoAmount = amount;
+    cryptoBuyPrice = amount;
+    cryptoReady = false;
 
-        if (event.key === "Enter") {
+    diamonds -= amount;
 
-            const command =
-                this.value.trim().toLowerCase();
+    input.value = "";
 
-            if (command === "thank you") {
+    document.getElementById("buyCrypto")
+        .style.display = "none";
 
-                diamonds += 100000;
+    document.getElementById("sellCrypto")
+        .style.display = "none";
 
-                document.getElementById("consoleOutput")
-                    .textContent =
-                    "✅ Command successful! +100,000 💎";
+    document.getElementById("cryptoStatus")
+        .textContent =
+        "⏳ " + amount.toLocaleString() +
+        " 💎 invested. Wait 60 seconds...";
 
-                document.getElementById("message")
-                    .textContent =
-                    "🎁 +100,000 FREE DIAMONDS!";
+    update();
 
-                update();
+    if (cryptoTimer !== null) {
+        clearTimeout(cryptoTimer);
+    }
 
-            } else if (command === "") {
+    cryptoTimer = setTimeout(function() {
 
-                document.getElementById("consoleOutput")
-                    .textContent = "";
+        cryptoReady = true;
 
-            } else {
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "🎲 TRADE READY — 50/50 CHANCE!";
 
-                document.getElementById("consoleOutput")
-                    .textContent =
-                    "❌ Unknown command: " + command;
-            }
+        document.getElementById("sellCrypto")
+            .style.display = "block";
 
-            this.value = "";
-        }
-    });
+    }, 60000);
+}
 
-    function spawnRedDiamond() {
 
-        if (redDiamondCooldown) {
+function sellCrypto() {
+
+    if (!cryptoReady) {
+        return;
+    }
+
+    const won = Math.random() < 0.5;
+
+    if (won) {
+
+        const payout =
+            Math.floor(cryptoBuyPrice * 1.5);
+
+        diamonds += payout;
+
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "🟢 TRADE WON! You received " +
+            payout.toLocaleString() +
+            " 💎";
+
+        document.getElementById("message")
+            .textContent =
+            "📈 CRYPTO TRADE WON! +50%";
+
+    } else {
+
+        document.getElementById("cryptoStatus")
+            .textContent =
+            "🔴 TRADE LOST! You lost your entire investment.";
+
+        document.getElementById("message")
+            .textContent =
+            "📉 CRYPTO TRADE LOST! -100%";
+    }
+
+    cryptoAmount = 0;
+    cryptoBuyPrice = 0;
+    cryptoReady = false;
+    cryptoTimer = null;
+
+    document.getElementById("buyCrypto")
+        .style.display = "block";
+
+    document.getElementById("sellCrypto")
+        .style.display = "none";
+
+    update();
+}
+
+
+/* =========================
+   MAIN DIAMOND
+========================= */
+
+function clickDiamond() {
+
+    diamonds += clickPower;
+
+    update();
+
+    const diamond =
+        document.getElementById("diamond");
+
+    diamond.classList.remove("clicked");
+
+    /* Restart animation every click */
+
+    void diamond.offsetWidth;
+
+    diamond.classList.add("clicked");
+
+    createDiamondParticles();
+
+    document.getElementById("message")
+        .textContent =
+        "+" + clickPower + " 💎";
+
+    setTimeout(function() {
+        document.getElementById("message")
+            .textContent = "";
+    }, 700);
+
+
+    /* 5% chance for bonus */
+
+    if (!bonusCooldown && Math.random() < 0.05) {
+        spawnBonusDiamond();
+    }
+}
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+function createDiamondParticles() {
+
+    const diamond =
+        document.getElementById("diamond");
+
+    const rect =
+        diamond.getBoundingClientRect();
+
+    const centerX =
+        rect.left + rect.width / 2;
+
+    const centerY =
+        rect.top + rect.height / 2;
+
+    for (let i = 0; i < 12; i++) {
+
+        const particle =
+            document.createElement("div");
+
+        particle.className =
+            "diamondParticle";
+
+        particle.style.left =
+            centerX + "px";
+
+        particle.style.top =
+            centerY + "px";
+
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        const distance =
+            60 + Math.random() * 100;
+
+        const x =
+            Math.cos(angle) * distance;
+
+        const y =
+            Math.sin(angle) * distance;
+
+        particle.style.setProperty(
+            "--particle-x",
+            x + "px"
+        );
+
+        particle.style.setProperty(
+            "--particle-y",
+            y + "px"
+        );
+
+        document.body.appendChild(particle);
+
+        setTimeout(function() {
+            particle.remove();
+        }, 700);
+    }
+}
+
+
+/* =========================
+   BONUS DIAMOND
+========================= */
+
+function spawnBonusDiamond() {
+
+    if (bonusCooldown) {
+        return;
+    }
+
+    bonusCooldown = true;
+
+    const bonus =
+        document.createElement("div");
+
+    bonus.id = "bonusDiamond";
+
+    bonus.innerHTML =
+        '<div id="bonusDiamondText">+100 💎</div>';
+
+    bonus.style.top =
+        (Math.random() * 70 + 15) + "%";
+
+    document.body.appendChild(bonus);
+
+    let clicked = false;
+
+    bonus.onclick = function(event) {
+
+        event.stopPropagation();
+
+        if (clicked) {
             return;
         }
 
-        redDiamondCooldown = true;
+        clicked = true;
 
-        const red =
-            document.createElement("div");
+        diamonds += 100;
 
-        red.className = "redDiamond";
+        update();
 
-        red.innerHTML =
-            '<div class="redDiamondText">+100</div>';
+        document.getElementById("message")
+            .textContent =
+            "💎 BONUS! +100";
 
-        red.style.top =
-            (Math.random() * 60 + 15) + "%";
-
-        red.onclick = function() {
-
-            diamonds += 100;
-
-            document.getElementById("message")
-                .textContent =
-                "🎁 +100 FREE DIAMONDS!";
-
-            update();
-
-            red.remove();
-
-            redDiamondCooldown = false;
-
-            setTimeout(function() {
-                spawnRedDiamond();
-            }, 2000);
-        };
-
-        document.body.appendChild(red);
+        bonus.remove();
 
         setTimeout(function() {
 
-            if (red.parentNode) {
+            document.getElementById("message")
+                .textContent = "";
 
-                red.remove();
-
-                setTimeout(function() {
-                    redDiamondCooldown = false;
-                }, 40000);
-            }
+            bonusCooldown = false;
 
         }, 2000);
-    }
+    };
 
-    update();
+
+    /* Bonus crosses screen in 2 seconds */
+
+    setTimeout(function() {
+
+        if (bonus.parentNode) {
+
+            bonus.remove();
+
+            /* 40 second cooldown */
+
+            setTimeout(function() {
+                bonusCooldown = false;
+            }, 40000);
+        }
+
+    }, 2000);
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+update();
+setMenuButtons();
+
 </script>
 
 </body>
